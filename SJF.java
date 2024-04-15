@@ -7,12 +7,9 @@ public class SJF {
         processes.add(new Process(3,0,2));
         processes.add(new Process(4,5,4));
         int size = processes.size();
-        float arrivalTime = 0;
-        float finishTime = 0;
-        float turnAroundTime = 0;
-        float waitingTime = 0;
-        float avgTurnAroundTime = 0;
-        float avgWaitingTime = 0;
+        float arrivalTime = 0,finishTime = 0;
+        float turnAroundTime = 0,waitingTime = 0;
+        float avgTurnAroundTime = 0,avgWaitingTime = 0;
         processes.sort(Comparator.comparingInt(p -> p.burstTime));
     
         while(!processes.isEmpty()){
