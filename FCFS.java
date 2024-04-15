@@ -9,7 +9,7 @@ public class FCFS {
         processes.add(new Process(2, 1, 6));
         processes.add(new Process(3, 3, 2));
 
-        processes.sort(Comparator.comparingInt(p -> p.burstTime));
+        processes.sort(Comparator.comparingInt(p -> p.arrivalTime));
         float arrivalTime = 0;
         float finishTime = 0;
         float turnAroundTime = 0;
@@ -50,5 +50,6 @@ class Process{
     public Process(int pid , int arrivalTime , int burstTime){
         this.pid = pid;
         this.arrivalTime = arrivalTime;
-        this.burstTime = burstTime;}
+        this.burstTime = burstTime;
+    }
 }
