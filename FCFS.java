@@ -10,12 +10,9 @@ public class FCFS {
         processes.add(new Process(3, 3, 2));
 
         processes.sort(Comparator.comparingInt(p -> p.arrivalTime));
-        float arrivalTime = 0;
-        float finishTime = 0;
-        float turnAroundTime = 0;
-        float waitingTime = 0;
-        float avgTurnAroundTime = 0;
-        float avgWaitingTime = 0;
+        float arrivalTime = 0,finishTime = 0;
+        float turnAroundTime = 0, waitingTime = 0;
+        float avgTurnAroundTime = 0 , avgWaitingTime = 0;
         for(Process p : processes){
             if(p.arrivalTime > arrivalTime){
                 arrivalTime = p.arrivalTime;
