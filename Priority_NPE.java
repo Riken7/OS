@@ -2,13 +2,21 @@ import java.util.*;
 //Low priority number means high priority
 public class Priority_NPE {
     public static void main(String[] args) {
-        List<Process> processes = new ArrayList<>();
-        processes.add(new Process(1,0,10,5));
-        processes.add(new Process(2,1,6,4));
-        processes.add(new Process(3,3,2,2));
-        processes.add(new Process(4,5,4,0));
+
+        System.out.println("Enter the number of processes : ");
+        Scanner sc = new Scanner(System.in);
+        int size = sc.nextInt();
         
-        int size = processes.size();
+        List<Process> processes = new ArrayList<>(size);
+        for(int i = 0 ; i < size ; i++){
+            System.out.println("Enter the arrival time, burst time and priority of process " + (i+1) + " : ");
+            int arrivalTime = sc.nextInt();
+            int burstTime = sc.nextInt();
+            int priority = sc.nextInt();
+            processes.add(new Process(i+1, arrivalTime, burstTime, priority));
+        }
+        sc.close();
+
         float arrivalTime = 0,finishTime= 0;
         float turnAroundTime = 0,waitingTime = 0;
         float avgTurnAroundTime = 0,avgWaitingTime = 0;
