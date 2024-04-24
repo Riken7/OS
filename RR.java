@@ -59,7 +59,6 @@ public class RR {
                 currentTime++;
             }
     }
-        
         avgTurnAroundTime /= size;
         avgWaitingTime /= size;
 
