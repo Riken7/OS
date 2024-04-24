@@ -8,13 +8,13 @@ public class RR {
     // processes.add(new Process(4,2,1));
     // processes.add(new Process(5,2,2));
 
-    processes.add(new Process(1, 5, 5));
-    processes.add(new Process(2, 4, 6));
-    processes.add(new Process(3, 3, 7));
-    processes.add(new Process(4, 1, 9));
-    processes.add(new Process(5, 2, 2));
-    processes.add(new Process(6, 6, 3));
-    int qt = 3 , csgo = 0; 
+    processes.add(new Process(1, 0, 10));
+    processes.add(new Process(2, 1, 6));
+    processes.add(new Process(3, 3, 2));
+    processes.add(new Process(4, 5, 4));
+    // processes.add(new Process(5, 2, 2));
+    // processes.add(new Process(6, 6, 3));
+    int qt = 4 , csgo = 1; 
     int size = processes.size();
     float finishTime = 0 , currentTime = 0;
     float turnAroundTime = 0,waitingTime = 0;
@@ -34,12 +34,12 @@ public class RR {
                     while(!processes.isEmpty() && processes.get(0).arrivalTime <= currentTime){
                         queue.add(processes.remove(0));
                     }
-                    
                     queue.add(current);
-                    
+                    currentTime += csgo;
                 }
                 else{
                     currentTime += current.burstTime;
+                    
                     finishTime = currentTime;
                     
                     turnAroundTime = finishTime - current.arrivalTime;
@@ -53,7 +53,7 @@ public class RR {
 
                     avgTurnAroundTime += turnAroundTime; 
                     avgWaitingTime += waitingTime; 
-                    currentTime += csgo; 
+                    currentTime += csgo;
                 }
             }else{
                 currentTime++;
