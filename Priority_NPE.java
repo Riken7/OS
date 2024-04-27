@@ -1,5 +1,5 @@
 import java.util.*;
-//higher priority value means higher priority
+//lower priority value means higher priority
 public class Priority_NPE {
     public static void main(String[] args) {
 
