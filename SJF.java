@@ -14,33 +14,26 @@ public class SJF {
             processes.add(new Process(i+1, arrivalTime, burstTime));
         }
         sc.close();
-        // processes.add(new Process(1, 2, 6));
-        // processes.add(new Process(2, 5, 2));
-        // processes.add(new Process(3, 1, 8));
-        // processes.add(new Process(4, 0, 3));
-        // processes.add(new Process(5, 4, 4));
         float arrivalTime = 0,finishTime = 0;
         float turnAroundTime = 0,waitingTime = 0;
         float avgTurnAroundTime = 0,avgWaitingTime = 0;
         processes.sort(Comparator.comparingInt(p -> p.burstTime));
+        System.out.println("-----------------------------------------------------------------");
+        System.out.println("|PID\t|Arrival|Burst\t|Finish\t|Turn Around\t|Waiting\t|");
+        System.out.println("-----------------------------------------------------------------");
     
         while(!processes.isEmpty()){
             
             Process current = processes.remove(0);
             if(current.arrivalTime > arrivalTime){ 
                 processes.add(current);
+                arrivalTime++;
             }
             else{
                 finishTime = arrivalTime + current.burstTime;
                 turnAroundTime = finishTime - current.arrivalTime;
                 waitingTime = turnAroundTime - current.burstTime;
-                System.out.println("---Process " + current.pid + "---");
-                System.out.println("Arrival Time : " + current.arrivalTime);
-                System.out.println("Burst Time : " + current.burstTime);
-                System.out.println("Finish Time : " + finishTime);
-                System.out.println("Turn Around Time : " + turnAroundTime);
-                System.out.println("Waiting Time : " + waitingTime + "\n");
-
+                System.out.println("|"+current.pid + "\t|" + current.arrivalTime + "\t|" + current.burstTime + "\t|" + finishTime + "\t|" + turnAroundTime + "\t\t|" + waitingTime + "\t\t|");
                 avgTurnAroundTime += turnAroundTime; 
                 avgWaitingTime += waitingTime; 
 
@@ -51,8 +44,7 @@ public class SJF {
         avgTurnAroundTime /= size;
         avgWaitingTime /= size;
 
-        System.out.println("Average Turn Around Time : " + avgTurnAroundTime + "\nAverage Waiting Time : " + avgWaitingTime);
-
+        System.out.println("\nAverage Turn Around Time : " + avgTurnAroundTime + "\nAverage Waiting Time : " + avgWaitingTime);
     }
     
 }
