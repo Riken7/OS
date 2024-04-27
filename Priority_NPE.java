@@ -40,7 +40,7 @@ public class Priority_NPE {
                 avgWaitingTime += waitingTime; 
 
                 arrivalTime = finishTime;
-                processes.sort(Comparator.comparingInt((Process p) -> p.arrivalTime).thenComparingInt(p -> p.priority));
+                processes.sort(Comparator.comparingInt((Process p) -> p.priority));
                 
             }
         }
