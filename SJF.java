@@ -27,7 +27,6 @@ public class SJF {
             Process current = processes.remove(0);
             if(current.arrivalTime > arrivalTime){ 
                 processes.add(current);
-                arrivalTime++;
             }
             else{
                 finishTime = arrivalTime + current.burstTime;
