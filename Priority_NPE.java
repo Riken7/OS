@@ -29,7 +29,8 @@ public class Priority_NPE {
             Process current = processes.remove(0);
             if(current.arrivalTime > arrivalTime){
                 processes.add(current);
-                arrivalTime++;
+                processes.sort(Comparator.comparingInt((Process p) -> p.arrivalTime));
+                arrivalTime = processes.get(0).arrivalTime;
             }
             else {
                 finishTime = arrivalTime + current.burstTime;

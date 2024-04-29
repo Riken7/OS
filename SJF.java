@@ -27,6 +27,9 @@ public class SJF {
             Process current = processes.remove(0);
             if(current.arrivalTime > arrivalTime){ 
                 processes.add(current);
+                processes.sort(Comparator.comparingInt(p -> p.arrivalTime));
+                arrivalTime = processes.get(0).arrivalTime; // Advance the time to the arrival of the earliest arriving process
+    
             }
             else{
                 finishTime = arrivalTime + current.burstTime;
