@@ -3,6 +3,7 @@ public class PageReplacement {
 
     public static void main(String[] args) {
         int[] pages = {4, 7 , 6 , 1 , 7 , 6 , 1  , 2 ,7 ,2 };
+        // int[] pages = {5 , 0 , 1 , 2 , 0 , 3 , 2 , 0 , 3 , 4 , 1 , 0 , 5 , 0 ,4,3,2,1,2,0,1 };
         int frames = 3;
 
         // FIFO(pages, frames);
@@ -157,14 +158,17 @@ public class PageReplacement {
             if(frameList.contains(pages[i])){
                 hitOrMissList.add("Hit");
                 pageHit++;
+                counter.remove(counter.indexOf(pages[i]));
+                counter.add(pages[i]);
+                
             }else{
                 hitOrMissList.add("Miss");
                 pageFaults++;
-                pointer = frameList.indexOf(counter.get(0));
-                counter.remove(0);
+                pointer = frameList.indexOf(counter.remove(0));
+                counter.add(pages[i]);
                 frameList.remove(pointer);  
                 frameList.add(pointer,pages[i]); 
-                counter.add(pages[i]);
+                
             }
             for(int j=0;j<frameList.size();j++){
                 System.out.print(frameList.get(j)+"  ");
@@ -181,5 +185,8 @@ public class PageReplacement {
         double missRatio = ((double)pageFaults/pages.length)*100;
 
         System.out.println("Hit Ratio: "+hitRatio+"% \n" + "Miss Ratio: "+missRatio+"%");
+    }
+    public static void LFU(int[] pages, int frames){
+        
     }
 }
