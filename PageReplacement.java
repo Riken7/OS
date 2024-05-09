@@ -4,11 +4,13 @@ public class PageReplacement {
     public static void main(String[] args) {
         int[] pages = {4, 7 , 6 , 1 , 7 , 6 , 1  , 2 ,7 ,2 };
         // int[] pages = {5 , 0 , 1 , 2 , 0 , 3 , 2 , 0 , 3 , 4 , 1 , 0 , 5 , 0 ,4,3,2,1,2,0,1 };
+        // int[] pages = {7,0,7,4,3,1,4,7,2,0,4,3,0,3,2,7};
         int frames = 3;
 
         // FIFO(pages, frames);
         // Optimal(pages, frames);
         LRU(pages, frames);
+        // LFU(pages, frames);
     }
     public static void FIFO(int[] pages , int frames){
         ArrayList<Integer> frameList = new ArrayList<>(frames);
@@ -22,9 +24,15 @@ public class PageReplacement {
         System.out.println("-----------------------------------");
 
         while(frameList.size()!=frames){
-            frameList.add(pages[i]);
-            hitOrMissList.add("Miss");
-            pageFaults++;
+            if(frameList.contains(pages[i])) {
+                hitOrMissList.add("Hit");
+                pageHit++;
+            } else {
+                frameList.add(pages[i]);
+                hitOrMissList.add("Miss");
+                pageFaults++;
+            }
+
             for(int j=0;j<frameList.size();j++){
                 System.out.print(frameList.get(j)+"  ");
             }
@@ -74,10 +82,14 @@ public class PageReplacement {
         System.out.println("-----------------------------------");
 
         while(frameList.size()!=frames){
-            frameList.add(pages[i]);
-            hitOrMissList.add("Miss");
-            pageFaults++;
-            for(int j=0;j<frameList.size();j++){
+            if(frameList.contains(pages[i])) {
+                hitOrMissList.add("Hit");
+                pageHit++;
+            } else {
+                frameList.add(pages[i]);
+                hitOrMissList.add("Miss");
+                pageFaults++;
+            }for(int j=0;j<frameList.size();j++){
                 System.out.print(frameList.get(j)+"  ");
             }
             for(int j=0;j<frames-frameList.size();j++){
@@ -140,10 +152,16 @@ public class PageReplacement {
         System.out.println("-----------------------------------");
 
         while(frameList.size()!=frames){
-            frameList.add(pages[i]);
-            hitOrMissList.add("Miss");
-            pageFaults++;
-            counter.add(pages[i]);
+            if(frameList.contains(pages[i])) {
+                hitOrMissList.add("Hit");
+                pageHit++;
+            } else {
+                frameList.add(pages[i]);
+                hitOrMissList.add("Miss");
+                pageFaults++;
+                counter.add(pages[i]);
+            }
+            
             for(int j=0;j<frameList.size();j++){
                 System.out.print(frameList.get(j)+"  ");
             }
@@ -187,6 +205,33 @@ public class PageReplacement {
         System.out.println("Hit Ratio: "+hitRatio+"% \n" + "Miss Ratio: "+missRatio+"%");
     }
     public static void LFU(int[] pages, int frames){
-        
+        ArrayList<Integer> frameList = new ArrayList<>(frames);
+        ArrayList<String> hitOrMissList = new ArrayList<>();
+        // ArrayList<Integer> freq = new ArrayList<>(frames);
+        ArrayList<ArrayList<Integer>> freq = new ArrayList<>(frames);
+        int pageFaults = 0;
+        int pageHit = 0;
+        int i=0;
+        System.out.println("Page Replacement Algorithm: FIFO");
+        System.out.println("-----------------------------------");
+        System.out.println("Frame List\t\tHit/Miss");
+        System.out.println("-----------------------------------");
+        while (frameList.size()!=frames){
+            frameList.add(pages[i]);
+            hitOrMissList.add("Miss");
+            pageFaults++;
+            ArrayList<Integer> temp = new ArrayList<>();
+            temp.add(pages[i]);
+            freq.add(temp);
+            for(int j=0;j<frameList.size();j++){
+                System.out.print(frameList.get(j)+"  ");
+            }
+            for(int j=0;j<frames-frameList.size();j++){
+                System.out.print("X  ");
+            }
+            System.out.println("\t\t" + hitOrMissList.get(i));
+            i++;
+        } 
+        System.out.println(freq);
     }
 }
