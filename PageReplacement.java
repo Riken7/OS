@@ -6,7 +6,8 @@ public class PageReplacement {
         int frames = 3;
 
         // FIFO(pages, frames);
-        Optimal(pages, frames);
+        // Optimal(pages, frames);
+        LRU(pages, frames);
     }
     public static void FIFO(int[] pages , int frames){
         ArrayList<Integer> frameList = new ArrayList<>(frames);
@@ -124,5 +125,61 @@ public class PageReplacement {
 
         System.out.println("Hit Ratio: "+hitRatio+"% \n" + "Miss Ratio: "+missRatio+"%");
     
+    }
+    public static void LRU(int[] pages,int frames){
+        ArrayList<Integer> frameList = new ArrayList<>(frames);
+        ArrayList<String> hitOrMissList = new ArrayList<>();
+        ArrayList<Integer> counter = new ArrayList<>(frames);
+        int pageFaults = 0;
+        int pageHit = 0;
+        int i=0;
+        System.out.println("Page Replacement Algorithm: FIFO");
+        System.out.println("-----------------------------------");
+        System.out.println("Frame List\t\tHit/Miss");
+        System.out.println("-----------------------------------");
+
+        while(frameList.size()!=frames){
+            frameList.add(pages[i]);
+            hitOrMissList.add("Miss");
+            pageFaults++;
+            counter.add(pages[i]);
+            for(int j=0;j<frameList.size();j++){
+                System.out.print(frameList.get(j)+"  ");
+            }
+            for(int j=0;j<frames-frameList.size();j++){
+                System.out.print("X  ");
+            }
+            System.out.println("\t\t" + hitOrMissList.get(i));
+            i++;
+        }
+        int pointer = 0;
+        for(;i<pages.length;i++){
+            if(frameList.contains(pages[i])){
+                hitOrMissList.add("Hit");
+                pageHit++;
+            }else{
+                hitOrMissList.add("Miss");
+                pageFaults++;
+                pointer = frameList.indexOf(counter.get(0));
+                counter.remove(0);
+                frameList.remove(pointer);  
+                frameList.add(pointer,pages[i]); 
+                counter.add(pages[i]);
+            }
+            for(int j=0;j<frameList.size();j++){
+                System.out.print(frameList.get(j)+"  ");
+            }
+            
+            System.out.println("\t\t" + hitOrMissList.get(i));
+            
+        }
+        
+        System.out.println("Total page faults: "+pageFaults);
+        System.out.println("Total page hits: "+pageHit);
+
+        double hitRatio = ((double)pageHit/pages.length)*100;
+        double missRatio = ((double)pageFaults/pages.length)*100;
+
+        System.out.println("Hit Ratio: "+hitRatio+"% \n" + "Miss Ratio: "+missRatio+"%");
     }
 }
