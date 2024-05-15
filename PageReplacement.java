@@ -1,14 +1,9 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 public class PageReplacement {
 
-    public static void main(String[] args) {
-        // int[] pages = {4, 7 , 6 , 1 , 7 , 6 , 1  , 2 ,7 ,2 };
-        // int[] pages = {5 , 0 , 1 , 2 , 0 , 3 , 2 , 0 , 3 , 4 , 1 , 0 , 5 , 0 ,4,3,2,1,2,0,1 };
-        // int[] pages = {7,0,2,4,3,1,4,7,2,0,4,3,0,3,2,7};
-        // int[] pages = {7,0,1,2,0,3,0,4,2,3,0,3,2,1,2,0,1,7,0,1};
-        // int frames = 3;
-        
+    public static void main(String[] args) {        
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter the number of frames: ");
         int frames = sc.nextInt();
@@ -23,22 +18,23 @@ public class PageReplacement {
         System.out.print("1. FIFO \n2. Optimal \n3. LRU \n4. LFU \n");
         int choice = sc.nextInt();
         switch(choice){
-            case 1:
-                FIFO(pages, frames);
-                break;
-            case 2:
-                Optimal(pages, frames);
-                break;
-            case 3:
-                LRU(pages, frames);
-                break;
-            case 4:
-                LFU(pages, frames);
-                break;
-            default:
-                System.out.println("Invalid choice");
-        }
+             case 1:
+                 FIFO(pages, frames);
+                 break;
+             case 2:
+                 Optimal(pages, frames);
+                 break;
+             case 3:
+                 LRU(pages, frames);
+                 break;
+             case 4:
+                 LFU(pages, frames);
+                 break;
+             default:
+                 System.out.println("Invalid choice");
+         }
     }
+    //finish the code here
     public static void FIFO(int[] pages , int frames){
         ArrayList<Integer> frameList = new ArrayList<>(frames);
         ArrayList<String> hitOrMissList = new ArrayList<>();
@@ -59,7 +55,6 @@ public class PageReplacement {
                 hitOrMissList.add("Miss");
                 pageFaults++;
             }
-
             for(int j=0;j<frameList.size();j++){
                 System.out.print(frameList.get(j)+"   ");
             }
@@ -103,9 +98,9 @@ public class PageReplacement {
         int pageFaults = 0;
         int pageHit = 0;
         int i=0;
-        System.out.println("Page Replacement Algorithm: Optimal");
+        System.out.println("Page Replacement Algorithm: OPTIMAL");
         System.out.println("-----------------------------------");
-        System.out.println("Frame List\t\tHit/Miss");
+        System.out.println("F1  F2  F3\t\tHit/Miss");
         System.out.println("-----------------------------------");
 
         while(frameList.size()!=frames){
@@ -118,15 +113,15 @@ public class PageReplacement {
                 pageFaults++;
             }
             for(int j=0;j<frameList.size();j++){
-                System.out.print(frameList.get(j)+"  ");
+                System.out.print(frameList.get(j)+"   ");
             }
             for(int j=0;j<frames-frameList.size();j++){
-                System.out.print("X  ");
+                System.out.print("X   ");
             }
             System.out.println("\t\t" + hitOrMissList.get(i));
             i++;
         }
-        int pointer = 0;
+        int pointer = 0;           
         
         for(;i<pages.length;i++){
             int breakPoint = 0;
@@ -159,7 +154,7 @@ public class PageReplacement {
                 frameList.add(pointer,pages[i]);
             }
             for(int k=0;k<frameList.size();k++){
-                System.out.print(frameList.get(k)+"  ");
+                System.out.print(frameList.get(k)+"   ");
             }
             
             System.out.println("\t\t" + hitOrMissList.get(i));
@@ -182,9 +177,8 @@ public class PageReplacement {
         int i=0;
         System.out.println("Page Replacement Algorithm: LRU");
         System.out.println("-----------------------------------");
-        System.out.println("Frame List\t\tHit/Miss");
+        System.out.println("F1  F2  F3\t\tHit/Miss");
         System.out.println("-----------------------------------");
-
         while(frameList.size()!=frames){
             if(frameList.contains(pages[i])) {
                 hitOrMissList.add("Hit");
@@ -197,10 +191,10 @@ public class PageReplacement {
             }
             
             for(int j=0;j<frameList.size();j++){
-                System.out.print(frameList.get(j)+"  ");
+                System.out.print(frameList.get(j)+"   ");
             }
             for(int j=0;j<frames-frameList.size();j++){
-                System.out.print("X  ");
+                System.out.print("X   ");
             }
             System.out.println("\t\t" + hitOrMissList.get(i));
             i++;
@@ -223,7 +217,7 @@ public class PageReplacement {
                 
             }
             for(int j=0;j<frameList.size();j++){
-                System.out.print(frameList.get(j)+"  ");
+                System.out.print(frameList.get(j)+"   ");
             }
             
             System.out.println("\t\t" + hitOrMissList.get(i));
@@ -238,34 +232,85 @@ public class PageReplacement {
 
         System.out.println("Hit Ratio: "+hitRatio+"% \n" + "Miss Ratio: "+missRatio+"%");
     }
+    
     public static void LFU(int[] pages, int frames){
         ArrayList<Integer> frameList = new ArrayList<>(frames);
         ArrayList<String> hitOrMissList = new ArrayList<>();
-        ArrayList<ArrayList<Integer>> frequency = new ArrayList<>();
+        HashMap<Integer,Integer> freqMap = new HashMap<>();
         int pageFaults = 0;
         int pageHit = 0;
-        int i=0;
+        int i=0,flag= 0 ;
         System.out.println("Page Replacement Algorithm: LFU");
-        System.out.println("-----------------------------------");
-        System.out.println("Frame List\t\tHit/Miss");
-        System.out.println("-----------------------------------");
-        while (frameList.size()!=frames){
+        System.out.println("----------------------------------------");
+        System.out.println("F1  F2  F3  F4\t\t\tHit/Miss");
+        System.out.println("----------------------------------------");
+        
+        while (frameList.size() != frames) {
             if(frameList.contains(pages[i])) {
                 hitOrMissList.add("Hit");
                 pageHit++;
+                freqMap.put(pages[i], freqMap.getOrDefault(pages[i], 0) + 1);
             } else {
                 frameList.add(pages[i]);
                 hitOrMissList.add("Miss");
                 pageFaults++;
+                freqMap.put(pages[i], freqMap.getOrDefault(pages[i], 0) + 1);
             }
             for(int j=0;j<frameList.size();j++){
-                System.out.print(frameList.get(j)+"  ");
+                System.out.print(frameList.get(j)+"   ");
             }
             for(int j=0;j<frames-frameList.size();j++){
-                System.out.print("X  ");
+                System.out.print("X   ");
             }
             System.out.println("\t\t" + hitOrMissList.get(i));
+
             i++;
-        } 
+        }
+        while(i < pages.length) {
+            if(frameList.contains(pages[i])) {
+                pageHit++;
+                hitOrMissList.add("Hit");
+                freqMap.put(pages[i], freqMap.getOrDefault(pages[i], 0) + 1);
+            } else {
+                int minFreq = getLeastFreq(freqMap, frameList);
+                while(freqMap.get(pages[flag]) != minFreq) {
+                    flag++;
+                }
+                int index = frameList.indexOf(pages[flag]);
+                freqMap.put(pages[flag], 0);
+                frameList.remove(index);
+                frameList.add(index, pages[i]);
+                freqMap.put(pages[i], freqMap.getOrDefault(pages[i], 0) + 1);
+                
+                flag++;
+                pageFaults++;
+                hitOrMissList.add("Miss");
+            }
+            for(int j=0;j<frameList.size();j++){
+                System.out.print(frameList.get(j)+"   ");
+            }
+            
+            System.out.println("\t\t" + hitOrMissList.get(i));
+            
+            i++;
+        }
+
+
+        System.out.println("Total page faults: "+pageFaults);
+        System.out.println("Total page hits: "+pageHit);
+
+        double hitRatio = ((double)pageHit/pages.length)*100;
+        double missRatio = ((double)pageFaults/pages.length)*100;
+
+        System.out.println("Hit Ratio: "+hitRatio+"% \n" + "Miss Ratio: "+missRatio+"%");
+    }
+    public static int getLeastFreq(HashMap<Integer, Integer> freqMap, ArrayList<Integer> frameList) {
+        int minFreq = Integer.MAX_VALUE;
+        for(int i = 0; i < frameList.size(); i++) {
+            if(freqMap.get(frameList.get(i)) < minFreq) {
+                minFreq = freqMap.get(frameList.get(i));
+            }
+        }
+        return minFreq;
     }
 }
