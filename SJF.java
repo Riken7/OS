@@ -13,35 +13,40 @@ public class SJF {
             int burstTime = sc.nextInt();
             processes.add(new Process(i+1, arrivalTime, burstTime));
         }
+        List<Process> temp = new ArrayList<>(size);
         sc.close();
-        float arrivalTime = 0,finishTime = 0;
+        float currentTime = 0,finishTime = 0;
         float turnAroundTime = 0,waitingTime = 0;
         float avgTurnAroundTime = 0,avgWaitingTime = 0;
-        processes.sort(Comparator.comparingInt(p -> p.burstTime));
+        for(int k = 0 ; k<processes.size(); k++ ){
+            System.out.println("Process " + processes.get(k).pid + " : Arrival Time : " + processes.get(k).arrivalTime + " Burst Time : " + processes.get(k).burstTime);
+        }
         System.out.println("-----------------------------------------------------------------");
         System.out.println("|PID\t|Arrival|Burst\t|Finish\t|Turn Around\t|Waiting\t|");
         System.out.println("-----------------------------------------------------------------");
-    
-        while(!processes.isEmpty()){
-            
-            Process current = processes.remove(0);
-            if(current.arrivalTime > arrivalTime){ 
-                processes.add(current);
-                processes.sort(Comparator.comparingInt(p -> p.arrivalTime));
-                arrivalTime = processes.get(0).arrivalTime; // Advance the time to the arrival of the earliest arriving process
-    
+        while(!processes.isEmpty() || !temp.isEmpty()){
+            for(int k=0 ; k<processes.size(); k++){
+                Process add = processes.remove(k);
+                if(add.arrivalTime <= currentTime){
+                    temp.add(add);
+                    // temp.sort(Comparator.comparingInt((Process p) -> p.arrivalTime).thenComparingInt(p -> p.burstTime));
+                    temp.sort(Comparator.comparingInt(p -> p.burstTime));
+                }else{
+                    processes.add(k,add);
+                }
             }
-            else{
-                finishTime = arrivalTime + current.burstTime;
-                turnAroundTime = finishTime - current.arrivalTime;
-                waitingTime = turnAroundTime - current.burstTime;
-                System.out.println("|"+current.pid + "\t|" + current.arrivalTime + "\t|" + current.burstTime + "\t|" + finishTime + "\t|" + turnAroundTime + "\t\t|" + waitingTime + "\t\t|");
-                avgTurnAroundTime += turnAroundTime; 
-                avgWaitingTime += waitingTime; 
-
-                arrivalTime = finishTime;
-                processes.sort(Comparator.comparingInt(p -> p.burstTime));
+            if(temp.isEmpty()){
+                currentTime++;
+                continue;
             }
+            Process current = temp.remove(0);
+            finishTime = currentTime + current.burstTime;
+            turnAroundTime = finishTime - current.arrivalTime;
+            waitingTime = turnAroundTime - current.burstTime;
+            System.out.println("|"+current.pid + "\t|" + current.arrivalTime + "\t|" + current.burstTime + "\t|" + finishTime + "\t|" + turnAroundTime + "\t\t|" + waitingTime + "\t\t|");
+            avgTurnAroundTime += turnAroundTime; 
+            avgWaitingTime += waitingTime; 
+            currentTime = finishTime;
         }
         avgTurnAroundTime /= size;
         avgWaitingTime /= size;
